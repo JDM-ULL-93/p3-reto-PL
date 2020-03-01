@@ -30,7 +30,7 @@ const loadScripts = async function(scripts, onComplete){
     Promise.all(promises).then(function(resolve,reject){onComplete(null,scripts)});
 };
 
-loadScripts(["3.js","1.js","2.js","4,js"], function(error,scripts){
+loadScripts(["3.js","1.js","2.js"], function(error,scripts){
     console.log("Entrando en onComplete");
     if(error){
         console.log("OnComplete -> error");
