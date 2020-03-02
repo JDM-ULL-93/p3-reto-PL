@@ -17,23 +17,27 @@ const loadScripts = async function(scripts, onComplete){
         document.head.append(script);
     };
     let promises = [];
+    let timeOutsId = [];
     const aleatorio = (min,max) => { return Math.random()*(min+max); };
     for(let i = 0; i < scripts.length;i++){
         let src = scripts[i];
         promises.push( new Promise(
             function(resolve,reject){
-                setTimeout(function(){loadScript(src, resolve, reject)},aleatorio(5000,10000));
+                timeOutsId.push(setTimeout(function(){loadScript(src, resolve, reject)},aleatorio(5000,10000)));
             }
         ));
     }
-    Promise.all(promises).then(function(resolve,reject){onComplete(null,scripts)});
+    Promise.all(promises).then(
+        function(result){onComplete(null,result)}, //1ºarg == funcion llamada en exito
+        function(error){
+            timeOutsId.forEach(id => {clearTimeout(id)});
+            onComplete(error.message,null)
+        } ); //2ºarg == función llamada en error
 };
 
-loadScripts(["3.js","1.js","2.js"], function(error,scripts){
-    console.log("Entrando en onComplete");
+loadScripts(["error,js","3.js","1.js","2.js"], function(error,scripts){
     if(error){
-        console.log("OnComplete -> error");
-        console.log(error);
+        console.error(error);
     }
     else{
         alert(casa());
