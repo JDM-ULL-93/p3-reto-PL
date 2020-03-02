@@ -8,7 +8,6 @@ const loadScripts = async function(scripts, onComplete){
         script.src = src;
         console.log("Cargando script : "+ src);
         script.onload = function(){
-            
             success(script);
         };
         script.onerror = function(event){
